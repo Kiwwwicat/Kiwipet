@@ -7221,25 +7221,7 @@ class MainWindow(QMainWindow):
     
     def init_ui(self):
         self.setWindowTitle("Kiwipet")
-
-        # 모니터 해상도에 따른 자동 스케일링
-        screen = QApplication.primaryScreen().geometry()
-        screen_height = screen.height()
-
-        # 기준: 1080p = 100%, 1440p = 125%, 4K = 150%
-        if screen_height >= 2160:  # 4K
-            scale = 1.5
-        elif screen_height >= 1440:  # QHD
-            scale = 1.25
-        else:  # FHD 이하
-            scale = 1.0
-
-        base_width, base_height = 650, 750
-        scaled_width = int(base_width * scale)
-        scaled_height = int(base_height * scale)
-
-        self.setGeometry(100, 100, scaled_width, scaled_height)
-        print(f"[자동 스케일] 모니터 높이: {screen_height}px, 스케일: {int(scale*100)}%, 창 크기: {scaled_width}x{scaled_height}")
+        self.setGeometry(100, 100, 650, 750)
         
         # 윈도우 아이콘 설정
         self.set_window_icon()

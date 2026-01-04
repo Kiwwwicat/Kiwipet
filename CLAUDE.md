@@ -8,17 +8,43 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 # Install dependencies
 pip install PyQt5 Pillow pywin32 pyinstaller
 
-# Build executable (using spec file)
-py -m PyInstaller --clean Kiwipet.spec
-
-# Or build directly
-py -m PyInstaller --onefile --windowed --hidden-import=PyQt5.QtSvg --add-data "Pretendard-Medium.otf;." --add-data "Pretendard-Bold.otf;." --icon=kiwipet.ico --name "Kiwipet" kiwipet.py
+# v1.2.0 빌드 (기본 - 고정 창 크기 650x750)
+py -m PyInstaller Kiwipet.spec
 
 # Run directly without building
 py kiwipet.py
 ```
 
 Build output: `dist/Kiwipet.exe`
+
+### v1.2.1 빌드 (모니터 자동 스케일링)
+
+모니터 해상도에 따라 창 크기가 자동 조절되는 버전:
+
+1. `kiwipet.py`의 `init_ui()` 메서드에 auto_scale 코드 추가:
+```python
+def init_ui(self):
+    self.setWindowTitle("Kiwipet")
+
+    # 모니터 해상도에 따른 자동 스케일링
+    from auto_scale import get_scaled_size
+    scaled_width, scaled_height = get_scaled_size()
+    self.setGeometry(100, 100, scaled_width, scaled_height)
+
+    # ... 나머지 코드
+```
+
+2. 빌드:
+```bash
+py -m PyInstaller Kiwipet.spec
+```
+
+**스케일 기준:**
+| 모니터 | 스케일 | 창 크기 |
+|--------|--------|---------|
+| FHD (1080p) | 100% | 650x750 |
+| QHD (1440p) | 125% | 812x937 |
+| 4K (2160p) | 150% | 975x1125 |
 
 ---
 
@@ -32,45 +58,32 @@ Build output: `dist/Kiwipet.exe`
 - Character interactions and events
 - Google Gemini API for AI dialogue generation
 - Per-character personality, relationships, nicknames
-- App window size scaling (100%~200%)
 
 ### 모듈 파일
 
 | 파일 | 설명 |
 |------|------|
 | `kiwipet.py` | 메인 애플리케이션 |
-| `app_scale.py` | 앱 크기 조절 기능 모듈 (kiwipet.py에서 import) |
+| `auto_scale.py` | 모니터 자동 스케일링 모듈 (v1.2.1 전용, 선택적 사용) |
 
-> **빌드 시 모듈 처리**: PyInstaller가 kiwipet.py의 import문을 분석하여 app_scale.py를 자동으로 exe에 포함시킵니다.
+### auto_scale.py 모듈 (v1.2.1 전용)
 
-### app_scale.py 모듈
-
-앱 창 크기를 조절하는 기능 모듈입니다. `kiwipet.py`에서 import하여 사용합니다.
+모니터 해상도에 따라 앱 창 크기를 자동 조절하는 모듈입니다.
+**v1.2.0 기본 빌드에는 포함되지 않으며**, v1.2.1 빌드 시에만 사용합니다.
 
 ```python
-# kiwipet.py에서의 import
-from app_scale import (
-    create_app_scale_section,
-    calculate_scaled_size,
-    apply_scale_to_window,
-    DEFAULT_APP_SCALE,
-    BASE_WIDTH,
-    BASE_HEIGHT
-)
+# v1.2.1 빌드 시 kiwipet.py init_ui()에 추가
+from auto_scale import get_scaled_size
+scaled_width, scaled_height = get_scaled_size()
 ```
 
 **상수:**
-- `DEFAULT_APP_SCALE = 100` - 기본 스케일
-- `MIN_APP_SCALE = 100` - 최소 스케일
-- `MAX_APP_SCALE = 200` - 최대 스케일
 - `BASE_WIDTH = 650` - 기본 창 너비
 - `BASE_HEIGHT = 750` - 기본 창 높이
-- `PRESET_VALUES = [100, 125, 150, 200]` - 프리셋 버튼 값
 
 **함수:**
-- `create_app_scale_section(parent, current_scale, callback)` - UI 섹션 생성, (widget, slider) 튜플 반환
-- `calculate_scaled_size(scale)` - 스케일에 따른 창 크기 계산, (width, height) 튜플 반환
-- `apply_scale_to_window(window, scale, save_callback)` - 윈도우에 스케일 적용
+- `get_auto_scale()` - 모니터 해상도에 따른 스케일 값 반환 (1.0, 1.25, 1.5)
+- `get_scaled_size()` - 스케일링된 (width, height) 튜플 반환
 
 ---
 
@@ -313,5 +326,5 @@ Available in `.claude/commands/`:
 
 ---
 
-*마지막 업데이트: 2025-12-20*
-*코드 라인 수: 약 13,800줄*
+*마지막 업데이트: 2025-01-05*
+*코드 라인 수: 약 13,900줄*
