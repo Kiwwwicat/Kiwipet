@@ -6,16 +6,6 @@ import base64
 import json
 import time
 
-# 앱 크기 조절 모듈
-from app_scale import (
-    create_app_scale_section,
-    calculate_scaled_size,
-    apply_scale_to_window,
-    DEFAULT_APP_SCALE,
-    BASE_WIDTH,
-    BASE_HEIGHT
-)
-
 # ============ NEW UI SVG ICONS ============
 # Placeholder 이미지 (이미지 없는 캐릭터용)
 PLACEHOLDER_SVG = '''<svg width="808" height="808" viewBox="0 0 808 808" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -7156,9 +7146,6 @@ class MainWindow(QMainWindow):
         self.auto_backup_enabled = True  # 기본: 켜짐
         self.max_backups = 12  # 기본: 12개 유지
 
-        # 앱 크기 설정
-        self.app_scale = DEFAULT_APP_SCALE  # app_scale 모듈에서 가져옴
-
         # AI 대사 생성 완료 큐 (스레드 안전)
         self._ai_complete_queue = []
         self._current_ai_mode = None  # 'generate_now', 'uncached', 'cache', 'single', 'add'
@@ -10315,8 +10302,7 @@ class MainWindow(QMainWindow):
             'ai_dialogues_cache': ai_cache_to_save,  # AI 대사 캐시 저장
             'selected_monitor': getattr(self, '_selected_monitor', 0),  # 모니터 설정 저장
             'auto_backup_enabled': getattr(self, 'auto_backup_enabled', True),  # 자동 백업 설정
-            'max_backups': getattr(self, 'max_backups', 12),  # 백업 보관 개수
-            'app_scale': getattr(self, 'app_scale', 100)  # 앱 크기 스케일
+            'max_backups': getattr(self, 'max_backups', 12)  # 백업 보관 개수
         }
         
         # 관계 정보 저장 (정규화된 형식: {"min_id,max_id": {id1: "감정", id2: "감정"}})
@@ -10698,12 +10684,6 @@ class MainWindow(QMainWindow):
             self.auto_backup_enabled = config.get('auto_backup_enabled', True)
             self.max_backups = config.get('max_backups', 12)
             print(f"[로드] 자동 백업: {self.auto_backup_enabled}, 보관 개수: {self.max_backups}")
-
-            # 앱 크기 설정 로드
-            self.app_scale = config.get('app_scale', 100)
-            if self.app_scale != 100:
-                self.apply_app_scale(save=False)
-            print(f"[로드] 앱 크기: {self.app_scale}%")
 
             # 타이머 상태 업데이트
             if hasattr(self, 'auto_backup_timer'):
@@ -11087,31 +11067,6 @@ class MainWindow(QMainWindow):
         layout.addWidget(monitor_section)
 
         # 구분선
-        line_scale = QFrame()
-        line_scale.setFrameShape(QFrame.HLine)
-        line_scale.setStyleSheet("background-color: #C5E8D8;")
-        layout.addWidget(line_scale)
-
-        # 앱 크기 변경 섹션 (app_scale 모듈 사용)
-        def on_scale_preview(value):
-            """미리보기: 창 크기만 변경"""
-            try:
-                width, height = calculate_scaled_size(value)
-                self.resize(width, height)
-            except Exception as e:
-                print(f"[앱 크기 미리보기] 오류: {e}")
-
-        scale_section, app_scale_slider = create_app_scale_section(
-            self,
-            getattr(self, 'app_scale', DEFAULT_APP_SCALE),
-            on_scale_preview
-        )
-        layout.addWidget(scale_section)
-
-        # 슬라이더 참조 저장 (apply에서 사용)
-        dialog.app_scale_slider = app_scale_slider
-
-        # 구분선
         line2 = QFrame()
         line2.setFrameShape(QFrame.HLine)
         line2.setStyleSheet("background-color: #C5E8D8;")
@@ -11333,13 +11288,6 @@ class MainWindow(QMainWindow):
             startup_enabled = dialog.startup_toggle.isChecked()
             self.set_startup_enabled(startup_enabled)
 
-        # 앱 크기 설정 적용
-        if hasattr(dialog, 'app_scale_slider'):
-            new_scale = dialog.app_scale_slider.value()
-            if new_scale != self.app_scale:
-                self.app_scale = new_scale
-                self.apply_app_scale()
-
         # 자동 백업 설정 적용
         if hasattr(dialog, 'auto_backup_toggle'):
             self.auto_backup_enabled = dialog.auto_backup_toggle.isChecked()
@@ -11465,14 +11413,6 @@ class MainWindow(QMainWindow):
             QApplication.quit()
         except Exception as e:
             print(f"[재시작 오류] {e}")
-
-    def apply_app_scale(self, save=True):
-        """앱 크기 스케일 적용 (app_scale 모듈 사용)"""
-        apply_scale_to_window(
-            self,
-            self.app_scale,
-            self.save_characters if save else None
-        )
 
     def is_startup_enabled(self):
         """시작 프로그램 등록 여부 확인"""
