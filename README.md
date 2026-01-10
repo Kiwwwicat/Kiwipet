@@ -8,6 +8,14 @@
 
 ---
 
+## KiwipetJP (日本語版)
+
+[Booth](https://kiwwwicat.booth.pm/items/7834356)で配布しているデスクトップメイトプログラムのソースコードです。
+
+本アプリは **GPL v3** ライセンス規定に従います。
+
+---
+
 ## Credits
 
 **Made by**
