@@ -8,7 +8,7 @@
 
 ---
 
-## KiwipetJP (日本語版)
+## KiwipetJP: 自動会話出力壁紙育成アプリ
 
 [Booth](https://kiwwwicat.booth.pm/items/7834356)で配布しているデスクトップメイトプログラムのソースコードです。
 
