@@ -13449,7 +13449,7 @@ class MainWindow(QMainWindow):
             add_text("—", divider_style, 8, 8)
         
         # Version & Release
-        add_text("Version 1.2.1")
+        add_text("Version 1.2.0")
         add_text("Release 2026.01.11", margin_bottom=0)
         
         add_divider()
