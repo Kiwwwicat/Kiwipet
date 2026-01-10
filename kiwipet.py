@@ -1470,7 +1470,6 @@ def clear_dialogue_cache():
 
 
 class CharacterWidget(QWidget):
-    """데스크톱 바닥을 통통 뛰어다니는 캐릭터 위젯"""
     collision_detected = pyqtSignal(object)
     
     def __init__(self, image_path, char_id, facing_direction='front', scale=100, bubble_color='#81C784', bubble_size=100):
@@ -2662,7 +2661,7 @@ class CharacterWidget(QWidget):
             ("무관심", "무관심"): ('ignore_each', 60, ['😐', '...', '🙄', '💤', '🥱', '😴', '😑', '😶', '🤷', '💭'])
         }
         
-        # 비대칭 감정 조합 (각 감정별 최소 6개 이벤트 보장)
+        # 비대칭 감정 조합 (각 감정별 이벤트 최소 6개)
         asymmetric_events = {
             # 사랑 관련 (6개)
             ("사랑", "증오"): ('unrequited_love', 150),
@@ -13450,8 +13449,8 @@ class MainWindow(QMainWindow):
             add_text("—", divider_style, 8, 8)
         
         # Version & Release
-        add_text("Version 1.2.0")
-        add_text("Release 2026.01.04", margin_bottom=0)
+        add_text("Version 1.2.1")
+        add_text("Release 2026.01.11", margin_bottom=0)
         
         add_divider()
         
@@ -13485,9 +13484,18 @@ class MainWindow(QMainWindow):
         add_text("Email: kiwwwicat@naver.com")
         
         add_divider()
-        
+
+        # License
+        add_text("License")
+        add_text("GNU GPL v3")
+        add_text("PyQt5 - GPL v3")
+        add_text("Pillow - MIT-CMU")
+        add_text("pywin32 - PSF")
+
+        add_divider()
+
         # Copyright
-        add_text("© 2025 Kiwicat. All rights reserved.", margin_bottom=15)
+        add_text("© 2025 Kiwicat.", margin_bottom=15)
         
         # 하단 이미지 (kiwicat_kiwipet.svg) - 36x36
         kiwicat1_svg = '''<svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">

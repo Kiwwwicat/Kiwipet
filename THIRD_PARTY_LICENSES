@@ -1,0 +1,23 @@
+================================================================================
+THIRD-PARTY LICENSES
+================================================================================
+
+PyQt5
+-----
+Copyright (c) Riverbank Computing Limited
+Licensed under the GNU General Public License v3
+https://www.riverbankcomputing.com/software/pyqt/
+
+Pillow (PIL Fork)
+-----------------
+Copyright (c) 1997-2011 Secret Labs AB
+Copyright (c) 1995-2011 Fredrik Lundh
+Copyright (c) 2010 Jeffrey A. Clark and contributors
+Licensed under the MIT-CMU License
+https://pillow.readthedocs.io/
+
+pywin32
+-------
+Copyright (c) Mark Hammond and contributors
+Licensed under Python Software Foundation License
+https://github.com/mhammond/pywin32
