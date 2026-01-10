@@ -2,7 +2,7 @@
 
 
 a = Analysis(
-    ['kiwipet.py'],
+    ['Kiwipet.py'],
     pathex=[],
     binaries=[],
     datas=[('Pretendard-Medium.otf', '.'), ('Pretendard-Bold.otf', '.')],
