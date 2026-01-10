@@ -11,6 +11,9 @@ from PyQt5.QtWidgets import QApplication
 BASE_WIDTH = 650
 BASE_HEIGHT = 750
 
+# 현재 스케일 값 저장 (글씨 크기 계산용)
+_current_scale = 1.0
+
 
 def get_auto_scale():
     """
@@ -19,16 +22,37 @@ def get_auto_scale():
     Returns:
         float: 스케일 값 (1.0, 1.25, 1.5)
     """
+    global _current_scale
     screen = QApplication.primaryScreen().geometry()
     screen_height = screen.height()
 
     # 기준: 1080p = 100%, 1440p = 125%, 4K = 150%
     if screen_height >= 2160:  # 4K
-        return 1.5
+        _current_scale = 1.5
     elif screen_height >= 1440:  # QHD
-        return 1.25
+        _current_scale = 1.25
     else:  # FHD 이하
-        return 1.0
+        _current_scale = 1.0
+
+    return _current_scale
+
+
+def get_current_scale():
+    """현재 스케일 값 반환"""
+    return _current_scale
+
+
+def scale_font_size(base_size):
+    """
+    기본 폰트 크기를 스케일에 맞게 조절
+
+    Args:
+        base_size: 기본 폰트 크기 (px)
+
+    Returns:
+        int: 스케일링된 폰트 크기
+    """
+    return int(base_size * _current_scale)
 
 
 def get_scaled_size():

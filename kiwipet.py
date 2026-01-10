@@ -7221,16 +7221,7 @@ class MainWindow(QMainWindow):
     def init_ui(self):
         self.setWindowTitle("Kiwipet")
 
-        # 자동 스케일링 설정에 따라 창 크기 결정
-        if getattr(self, 'auto_scale_enabled', False):
-            try:
-                from auto_scale import get_scaled_size
-                scaled_width, scaled_height = get_scaled_size()
-                self.setGeometry(100, 100, scaled_width, scaled_height)
-            except ImportError:
-                self.setGeometry(100, 100, 650, 750)
-        else:
-            self.setGeometry(100, 100, 650, 750)
+        self.setGeometry(100, 100, 650, 750)
         
         # 윈도우 아이콘 설정
         self.set_window_icon()
@@ -10311,8 +10302,7 @@ class MainWindow(QMainWindow):
             'ai_dialogues_cache': ai_cache_to_save,  # AI 대사 캐시 저장
             'selected_monitor': getattr(self, '_selected_monitor', 0),  # 모니터 설정 저장
             'auto_backup_enabled': getattr(self, 'auto_backup_enabled', True),  # 자동 백업 설정
-            'max_backups': getattr(self, 'max_backups', 12),  # 백업 보관 개수
-            'auto_scale_enabled': getattr(self, 'auto_scale_enabled', False)  # 자동 스케일링 설정
+            'max_backups': getattr(self, 'max_backups', 12)  # 백업 보관 개수
         }
         
         # 관계 정보 저장 (정규화된 형식: {"min_id,max_id": {id1: "감정", id2: "감정"}})
@@ -10694,10 +10684,6 @@ class MainWindow(QMainWindow):
             self.auto_backup_enabled = config.get('auto_backup_enabled', True)
             self.max_backups = config.get('max_backups', 12)
             print(f"[로드] 자동 백업: {self.auto_backup_enabled}, 보관 개수: {self.max_backups}")
-
-            # 자동 스케일링 설정 로드
-            self.auto_scale_enabled = config.get('auto_scale_enabled', False)
-            print(f"[로드] 자동 스케일링: {self.auto_scale_enabled}")
 
             # 타이머 상태 업데이트
             if hasattr(self, 'auto_backup_timer'):
@@ -11213,45 +11199,6 @@ class MainWindow(QMainWindow):
         line4.setStyleSheet("background-color: #C5E8D8;")
         layout.addWidget(line4)
 
-        # 자동 스케일링 섹션
-        scale_section = QWidget()
-        scale_layout = QVBoxLayout(scale_section)
-        scale_layout.setSpacing(8)
-
-        scale_label = QLabel("창 크기 자동 조절")
-        scale_label.setStyleSheet("font-family: 'Pretendard', sans-serif; font-size: 15px; font-weight: 700;")
-        scale_layout.addWidget(scale_label)
-
-        # 자동 스케일링 토글 행
-        scale_toggle_row = QHBoxLayout()
-        scale_toggle_row.setSpacing(10)
-
-        auto_scale_toggle = ToggleSwitch(checked=getattr(self, 'auto_scale_enabled', False))
-        scale_toggle_row.addWidget(auto_scale_toggle)
-
-        scale_toggle_text = QLabel("모니터 해상도에 따라 창 크기 조절")
-        scale_toggle_text.setStyleSheet("font-family: 'Pretendard', sans-serif; font-size: 14px; font-weight: 700; color: #5A9C85;")
-        scale_toggle_row.addWidget(scale_toggle_text)
-        scale_toggle_row.addStretch()
-
-        scale_layout.addLayout(scale_toggle_row)
-
-        # 설명
-        scale_info = QLabel("FHD(1080p): 100%, QHD(1440p): 125%, 4K(2160p): 150%\n변경 시 앱을 재시작해야 적용됩니다.")
-        scale_info.setStyleSheet("font-family: 'Pretendard', sans-serif; font-size: 12px; font-weight: 700; color: #888;")
-        scale_layout.addWidget(scale_info)
-
-        layout.addWidget(scale_section)
-
-        # 토글 참조 저장
-        dialog.auto_scale_toggle = auto_scale_toggle
-
-        # 구분선
-        line5 = QFrame()
-        line5.setFrameShape(QFrame.HLine)
-        line5.setStyleSheet("background-color: #C5E8D8;")
-        layout.addWidget(line5)
-
         # 백업 복원 섹션
         backup_section = QWidget()
         backup_layout = QVBoxLayout(backup_section)
@@ -11353,14 +11300,6 @@ class MainWindow(QMainWindow):
 
         if hasattr(dialog, 'backup_count_combo'):
             self.max_backups = dialog.backup_count_combo.currentData()
-
-        # 자동 스케일링 설정 적용
-        if hasattr(dialog, 'auto_scale_toggle'):
-            old_value = getattr(self, 'auto_scale_enabled', False)
-            self.auto_scale_enabled = dialog.auto_scale_toggle.isChecked()
-            if old_value != self.auto_scale_enabled:
-                from PyQt5.QtWidgets import QMessageBox
-                QMessageBox.information(self, "알림", "창 크기 자동 조절 설정이 변경되었습니다.\n앱을 재시작하면 적용됩니다.")
 
         from PyQt5.QtWidgets import QApplication
         screens = QApplication.screens()
@@ -13511,7 +13450,7 @@ class MainWindow(QMainWindow):
             add_text("—", divider_style, 8, 8)
         
         # Version & Release
-        add_text("Version 1.2.1")
+        add_text("Version 1.2.2")
         add_text("Release 2026.01.11", margin_bottom=0)
         
         add_divider()
@@ -13774,10 +13713,10 @@ class MainWindow(QMainWindow):
 def main():
     app = QApplication(sys.argv)
     app.setApplicationName("Kiwipet")
-    
+
     # Pretendard 폰트 로드 시도
     pretendard_loaded = load_pretendard_font()
-    
+
     if pretendard_loaded:
         # Pretendard 폰트 사용 (DemiBold weight)
         font = QFont('Pretendard', 10)
@@ -13790,7 +13729,7 @@ def main():
         else:
             font = QFont("맑은 고딕", 10)
         print("[폰트] 시스템 폰트 사용")
-    
+
     app.setFont(font)
     
     # 앱 아이콘 설정 (모든 윈도우에 적용)
