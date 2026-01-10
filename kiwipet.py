@@ -13486,17 +13486,9 @@ class MainWindow(QMainWindow):
         
         add_divider()
 
-        # License
-        add_text("License")
-        add_text("GNU GPL v3")
-        add_text("PyQt5 - GPL v3")
-        add_text("Pillow - MIT-CMU")
-        add_text("pywin32 - PSF")
-
-        add_divider()
-
-        # Copyright
-        add_text("© 2025 Kiwicat.", margin_bottom=15)
+        # License & Copyright
+        add_text("License: GNU GPL v3")
+        add_text("© 2026 Kiwicat.", margin_bottom=15)
         
         # 하단 이미지 (kiwicat_kiwipet.svg) - 36x36
         kiwicat1_svg = '''<svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
