@@ -12219,7 +12219,7 @@ class MainWindow(QMainWindow):
         
         # AI 설명
         ai_info = QLabel("활성화하면 1시간마다 캐릭터별 대사를 생성합니다.\n"
-                        "(성격이 설정된 캐릭터만 적용)")
+                        "(성격이 작성된 캐릭터만 적용)")
         ai_info.setStyleSheet("font-family: 'Pretendard', sans-serif; font-size: 12px; font-weight: 700; color: #888;")
         ai_info.setWordWrap(True)
         layout.addWidget(ai_info)
