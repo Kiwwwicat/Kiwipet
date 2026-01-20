@@ -42,5 +42,4 @@
 
 ## License
 
-GNU GPL v3
 © 2026 Kiwicat.

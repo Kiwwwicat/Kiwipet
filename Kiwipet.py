@@ -406,7 +406,7 @@ class IconButton(QPushButton):
             painter.setPen(QPen(icon_color, 3, Qt.SolidLine, Qt.RoundCap))
             painter.drawLine(17, 17, 23, 23)
 
-__version__ = "1.2.0"
+__version__ = "1.2.3"
 __author__ = "Kiwipet Team"
 
 # ==================== AI 대사 생성 (Gemini API) ====================
@@ -6999,7 +6999,7 @@ class DirectionDialog(QDialog):
         layout.addLayout(close_layout)
         
         # 타이틀
-        title = QLabel("캐릭터가 어느쪽을\n바라보고 있나요?")
+        title = QLabel("캐릭터가 어느 쪽을\n바라보고 있나요?")
         title.setAlignment(Qt.AlignCenter)
         title.setMinimumHeight(60)
         title.setStyleSheet("""
@@ -12218,7 +12218,7 @@ class MainWindow(QMainWindow):
         layout.addLayout(ai_toggle_layout)
         
         # AI 설명
-        ai_info = QLabel("활성화하면 1시간마다 캐릭터별 대사를 미리 생성합니다.\n"
+        ai_info = QLabel("활성화하면 1시간마다 캐릭터별 대사를 생성합니다.\n"
                         "(성격이 설정된 캐릭터만 적용)")
         ai_info.setStyleSheet("font-family: 'Pretendard', sans-serif; font-size: 12px; font-weight: 700; color: #888;")
         ai_info.setWordWrap(True)
@@ -13438,7 +13438,17 @@ class MainWindow(QMainWindow):
                 border: none;
             }
         """
-        
+
+        small_gray_style = """
+            QLabel {
+                color: #cad6d1;
+                font-family: 'Pretendard', 'Apple SD Gothic Neo', '맑은 고딕', sans-serif;
+                font-size: 11px;
+                background: transparent;
+                border: none;
+            }
+        """
+
         def add_text(text, style=credit_style, margin_top=0, margin_bottom=0):
             label = QLabel(text)
             label.setAlignment(Qt.AlignCenter)
@@ -13450,8 +13460,8 @@ class MainWindow(QMainWindow):
             add_text("—", divider_style, 8, 8)
         
         # Version & Release
-        add_text("Version 1.2.2")
-        add_text("Release 2026.01.11", margin_bottom=0)
+        add_text("Version 1.2.3")
+        add_text("Release 2026.01.20", margin_bottom=0)
         
         add_divider()
         
@@ -13487,8 +13497,10 @@ class MainWindow(QMainWindow):
         add_divider()
 
         # License & Copyright
-        add_text("License: GNU GPL v3")
-        add_text("© 2026 Kiwicat.", margin_bottom=15)
+        add_text("© 2026 Kiwicat.")
+        add_text("This program comes with no warranty.", small_gray_style)
+        add_text("You may redistribute it under GNU GPL v3.", small_gray_style)
+        add_text("https://www.gnu.org/licenses/gpl-3.0.html", small_gray_style, margin_bottom=15)
         
         # 하단 이미지 (kiwicat_kiwipet.svg) - 36x36
         kiwicat1_svg = '''<svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
