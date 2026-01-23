@@ -40,6 +40,4 @@
 
 ---
 
-## License
-
 © 2026 Kiwicat.
