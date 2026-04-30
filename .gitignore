@@ -31,3 +31,5 @@ nul
 .DS_Store
 Thumbs.db
 .claude/
+build_*.log
+WORK_LOG.md
